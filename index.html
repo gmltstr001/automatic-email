@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Email Form</title>
+        <style type="text/css">
+        @charset "utf-8";
+        /* CSS Document */
+        
+        /* Reset Styles*/
+        html, body, div, span, applet, object, iframe,h1, h2, h3, h4, h5, h6, p, blockquote, pre,a, abbr, acronym, address, big, cite, code,
+        del, dfn, em, font, img, ins, kbd, q, s, samp,small, strike, sub, sup, tt, dl, dt, dd, ol, ul, li,fieldset, form, label, legend,caption{
+            margin: 0;
+            padding: 0;
+            border: 0;
+            outline: 0;
+            font-weight: inherit;
+            font-style: inherit;
+            font-size: 100%;
+            font: normal 100% Roboto, Helvetica, Verdana, serif;
+            vertical-align: baseline;
+        }
+        
+        :focus {
+            outline: 0;
+        }
+        
+        ol, ul {
+            list-style: none;
+        }
+        
+        caption{
+            text-align: left;
+            font-weight: normal;
+        }
+        blockquote:before, blockquote:after,q:before, q:after {
+            content: "";
+        }
+        blockquote, q {
+            quotes: "" "";
+        }
+        
+        /* ENDS Reset Styles*/
+        
+        /* START FORM */
+        
+        body {
+            font: normal 100% Roboto, Helvetica, Verdana, serif;
+            background:url(https://suppliersqa.whirlpool.com/images/background_theme_5.jpg) no-repeat center center fixed;
+              -webkit-background-size: cover;
+              -moz-background-size: cover;
+              -o-background-size: cover;
+               background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            padding: 50px 0;
+        }
+        
+        #form-container {
+                width: 80%;
+                max-width: 800px; /* Adjust maximum width as needed */
+                margin: auto;
+                background-color: #fff;
+                font-family: Arial, sans-serif;
+            }
+            
+        table {
+            width: 80%;
+            margin: 50px auto;
+            font-family: Arial, sans-serif;
+        }
+        
+        table td {
+            padding: 8px;
+        }
+        
+        input[type="text"],
+        input[type="email"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
+        
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            float: right;
+        }
+        
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        
+        .title {
+            font-size: 2rem;
+            margin-top: 50px;
+            text-align: center;
+            display: block;
+        }
+        
+        /* END FORM */
+
+        /* Popup styles */
+        .popup {    
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);   
+            width: 100vw;
+            height: 100vh;            
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 900;
+        }       
+        .popupchild {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            border: 1px solid #ccc;
+            padding: 50px;
+            margin: 20px 0;
+            z-index: 1000;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            display: none;
+        }
+        .fnctnButton {
+            background-color: #d7d7d7;
+            color: #2c2c2c;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }   
+        
+        /* Loading styles */
+        .loading {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1001;
+        }
+        
+        .loading::after {
+            content: '';
+            width: 60px;
+            height: 60px;
+            border: 6px solid #ccc;
+            border-top-color: #000;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        
+        </style>
+    </head>
+    <body>
+
+        <div id="popupparent" class="popup">
+            <!-- Loading indicator -->
+            <div id="loading" class="loading"></div>
+
+            <!-- Popup window -->
+            <div id="popup" class="popupchild">
+                <div id="popupContent"></div><br>
+                <button onclick="hidePopup()" class="fnctnButton">Close</button>
+            </div>
+        </div>
+        <div id="form-container">
+            <form id="emailForm" enctype="multipart/form-data">
+                <div class="title">Sample Form</div>
+                <table>
+                    <tr>
+                        <td><label for="sMailto">Mail to:</label></td>
+                        <td><input type="email" id="sMailto" name="sMailto" value="mirdro.a.villarica@accenture.com" readonly></td>
+                    </tr>
+                    <tr>
+                        <td><label for="sSubject">Subject:</label></td>
+                        <td><input type="text" id="sSubject" name="sSubject"></td>
+                    </tr>
+
+                    <!-- START OF THE BODY OF THE EMAIL -->
+                    <tr>
+                        <td><label for="sName">Name:</label></td>
+                        <td><input type="text" id="sName" name="sName"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="sAge">Age:</label></td>
+                        <td><input type="number" id="sAge" name="sAge" min="18"
+                                max="100"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="sGender">Gender:</label></td>
+                        <td>
+                            <select id="sGender" name="sGender">
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="sOcc">Occupation:</label></td>
+                        <td><input type="text" id="sOcc" name="sOcc"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="sDesc">Description:</label></td>
+                        <td><textarea id="sDesc" name="sDesc" rows="8"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td><label for="sSubs">Subscription:</label></td>
+                        <td>
+                            <input type="radio" id="free" name="sSubs"
+                                value="free" checked>
+                            <label for="free">Free</label><br>
+                            <input type="radio" id="basic" name="sSubs"
+                                value="basic">
+                            <label for="basic">Basic</label><br>
+                            <input type="radio" id="premium" name="sSubs"
+                                value="premium">
+                            <label for="premium">Premium</label><br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="sIntrst">Interests:</label></td>
+                        <td>
+                            <input type="checkbox" id="sports" name="sIntrst"
+                                value="sports">
+                            <label for="sports">Sports</label><br>
+                            <input type="checkbox" id="music" name="sIntrst"
+                                value="music">
+                            <label for="music">Music</label><br>
+                            <input type="checkbox" id="movies" name="sIntrst"
+                                value="movies">
+                            <label for="movies">Movies</label><br>
+                        </td>
+                    </tr>
+                    <!-- END OF THE BODY OF THE EMAIL -->
+                    <tr>
+                        <td><label for="attachment">Attachment:</label></td>
+                        <td><input type="file" id="attachment" name="attachment"></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><input type="submit" value="Submit"></td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+
+        <script>
+        document.getElementById('emailForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            document.getElementById('popupparent').style.display = 'block';
+            document.getElementById('loading').style.display = 'block';
+            const formData = new FormData(this);
+
+            const response = await fetch('/send-email', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.json();
+            //alert(result.message);
+            document.getElementById('loading').style.display = 'none';
+            showPopup(result.message);
+            });
+
+            function showPopup(message) {
+                const popupContent = document.getElementById('popupContent');
+                popupContent.textContent = message;
+                document.getElementById('popup').style.display = 'block';
+            }
+
+            function hidePopup() {
+                document.getElementById('popup').style.display = 'none';
+                document.getElementById('popupparent').style.display = 'none';
+            }
+    </script>
+    </body>
+</html>
